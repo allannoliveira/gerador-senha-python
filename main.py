@@ -94,5 +94,3 @@ def menu():
     (2) - Senha Numérica
     ''')
 
-
-aaaaaa
