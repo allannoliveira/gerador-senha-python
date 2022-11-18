@@ -5,13 +5,14 @@ import os
 #layout
 sg.theme('Dark2')
 layout = [  [sg.Text('Menu')],
-            [sg.Text('(1) Senhas fortes')],
-            [sg.Text('(2) Senhas fracas ')],
-            [sg.Text('Digite sua escolha'), sg.InputText()],
-            [sg.Text(f'Sua nova senha é:  ')],
+            [[sg.Checkbox('Senha Forte', default=True, key='checkbox1'), sg.Checkbox('Senha Numérica', key='checkbox2')]],
             [sg.OK(), sg.Cancel()]]
+            
 
 window = sg.Window('Window Title', layout)
+
+
+
 
 def senhaForte():
     lower = "abcdefghijklmnopqrstuvwxyz"
@@ -25,6 +26,7 @@ def senhaForte():
     password = "".join(random.sample(string, length))
 
     print(f'Sua nova senha é: {password}')
+
 def senhaNumerica():
     i = 0
     password = []
@@ -38,18 +40,48 @@ def senhaNumerica():
         i += 1
     print (f'Sua nova senha é: {password}')
 
+
+
+
+
+
+
+
+
+
+## Funcionar metodo
 while True:
     event, values = window.read()
-    if values == 1:
-        senhaForte()
-    elif values == 2:
+    
+    if values['checkbox1']:
+        ## instanciando nova janela para exibir senha
+        layout2 = [
+            [sg.Text(f'Sua nova senha é:  ')],
+            [sg.Text(size=(40,1), key='-OUTPUT-')],
+        ]     
+        
+        window2 = sg.Window('Window Title', layout2)
+        
+        ## Manter janela aberta
+        
+        while True:
+            event, values = window2.read()
+            if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
+                break
+       
+            window['-OUTPUT-'].update(values)
+
+        
+    if values['checkbox2']:
         senhaNumerica()
+        
+
+        
 
     if event == sg.WIN_CLOSED or event == 'Cancel': # if user closes window or clicks cancel
         break
-    print('You entered ', values[0])
-
-    window['-OUTPUT-'].update('Hello ' + values['-INPUT-'] + "! Thanks for trying PySimpleGUI")
+    
+    
 
 window.close()
 
@@ -87,10 +119,4 @@ def senhaNumerica():
     print (f'Sua nova senha é: {password}')
 
 
-
-def menu():
-    print(''' Menu
-    (1) - Senhas fortes
-    (2) - Senha Numérica
-    ''')
 
